@@ -6,11 +6,21 @@ namespace BuildFlow
 {
     public partial class App : Application
     {
+        public static string DatabaseLocation = String.Empty;
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new LoginPage());
+        }
+
+        public App(string databaseLocation)
+        {
+            InitializeComponent();
+
+            MainPage = new NavigationPage(new LoginPage());
+
+            DatabaseLocation = databaseLocation;
         }
 
         protected override void OnStart()
