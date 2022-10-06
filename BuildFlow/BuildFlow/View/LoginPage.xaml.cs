@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace BuildFlow
+namespace BuildFlow.View
 {
     public partial class LoginPage : ContentPage
     {

@@ -11,14 +11,14 @@ namespace BuildFlow
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new LoginPage());
+            MainPage = new NavigationPage(new View.LoginPage());
         }
 
         public App(string databaseLocation)
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new LoginPage());
+            MainPage = new NavigationPage(new View.LoginPage());
 
             DatabaseLocation = databaseLocation;
         }

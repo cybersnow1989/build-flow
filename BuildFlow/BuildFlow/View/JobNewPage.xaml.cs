@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace BuildFlow
+namespace BuildFlow.View
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class JobPage : ContentPage
+    public partial class JobNewPage : ContentPage
     {
-        public JobPage()
+        public JobNewPage()
         {
             InitializeComponent();
         }

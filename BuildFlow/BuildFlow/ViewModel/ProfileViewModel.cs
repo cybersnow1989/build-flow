@@ -4,10 +4,8 @@ using System.Text;
 
 namespace BuildFlow.ViewModel
 {
-    public class HomeVM
+    public class ProfileViewModel
     {
-        public HomeVM()
-        {
-        }
+        public ProfileViewModel() {}
     }
 }
