@@ -18,6 +18,7 @@ namespace BuildFlow.View
         {
             InitializeComponent();
             BindingContext = new HomeViewModel(DependencyService.Get<INavService>());
+            NavigationPage.SetHasBackButton(this, false);
         }
     }
 }
