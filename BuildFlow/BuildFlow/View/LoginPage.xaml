@@ -13,7 +13,7 @@
                 Text="Login"
                 BackgroundColor="#3F84E5"
                 TextColor="White"
-                Clicked="LoginButton_Clicked"/>
+                Command="{Binding LoginCommand}"/>
     </StackLayout>
 
 </ContentPage>

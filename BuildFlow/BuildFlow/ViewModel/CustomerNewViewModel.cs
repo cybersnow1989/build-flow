@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using BuildFlow.Model;
+using BuildFlow.Services;
 using Xamarin.Forms;
 
 namespace BuildFlow.ViewModel
@@ -28,14 +29,19 @@ namespace BuildFlow.ViewModel
             set
             {
                 _lastName = value;
-                //Validate(() => !string.IsNullOrWhiteSpace(_lastName), "Last name must be provided.");
-                Validate(() => _lastName == "Test", "Last name must be provided.");
+                Validate(() => !string.IsNullOrWhiteSpace(_lastName), "Last name must be provided.");
                 OnPropertyChanged();
                 SaveCommand.ChangeCanExecute();
             }
         }
 
-        public CustomerNewViewModel() {}
+        public CustomerNewViewModel(INavService navService) : base(navService)
+        {
+        }
+
+        public override void Init()
+        {
+        }
 
         private Command _saveCommand;
         public Command SaveCommand => _saveCommand ?? (_saveCommand = new Command(Save, CanSave));
@@ -51,7 +57,6 @@ namespace BuildFlow.ViewModel
             //TODO: Persist entry
         }
 
-        //bool CanSave() => !string.IsNullOrWhiteSpace(FirstName) && !HasErrors;
-        bool CanSave() => !HasErrors;
+        bool CanSave() => !string.IsNullOrWhiteSpace(FirstName) && !HasErrors;
     }
 }

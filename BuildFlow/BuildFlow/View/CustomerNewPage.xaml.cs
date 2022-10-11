@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BuildFlow.Model;
+using BuildFlow.Services;
 using BuildFlow.ViewModel;
 using SQLite;
 using Xamarin.Forms;
@@ -21,7 +22,7 @@ namespace BuildFlow.View
 
             BindingContextChanged += CustomerNewPage_BindingContextChanged;
 
-            BindingContext = new CustomerNewViewModel();
+            BindingContext = new CustomerNewViewModel(DependencyService.Get<INavService>());
         }
 
         private void CustomerNewPage_BindingContextChanged(object sender, EventArgs e)

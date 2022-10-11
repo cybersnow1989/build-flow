@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using BuildFlow.Model;
+using BuildFlow.Services;
 using Xamarin.Forms;
 
 namespace BuildFlow.ViewModel
 {
-    public class CustomerDetailsViewModel : BaseViewModel
+    public class CustomerDetailsViewModel : BaseViewModel<Customer>
     {
         private Customer _selectedCustomer;
 
@@ -20,7 +21,11 @@ namespace BuildFlow.ViewModel
             }
         }
 
-        public CustomerDetailsViewModel(Customer selectedCustomer)
+        public CustomerDetailsViewModel(INavService navService) : base(navService)
+        {
+        }
+
+        public override void Init(Customer selectedCustomer)
         {
             SelectedCustomer = selectedCustomer;
         }

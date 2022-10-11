@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using BuildFlow.Model;
+using BuildFlow.Services;
 using Xamarin.Forms;
 
 namespace BuildFlow.ViewModel
@@ -22,26 +23,31 @@ namespace BuildFlow.ViewModel
             }
         }
 
-        public CustomerViewModel()
+        public CustomerViewModel(INavService navService) : base(navService)
         {
-            Customers = new ObservableCollection<Customer>
+            Customers = new ObservableCollection<Customer>();
+        }
+
+        public override void Init()
+        {
+            LoadCustomers();
+        }
+
+        void LoadCustomers()
+        {
+            Customers.Clear();
+
+            Customers.Add(new Customer
             {
-                new Customer
-                {
-                    FirstName = "FirstName1",
-                    LastName = "LastName1"
-                },
-                new Customer
-                {
-                    FirstName = "FirstName2",
-                    LastName = "LastName2"
-                },
-                new Customer
-                {
-                    FirstName = "FirstName3",
-                    LastName = "LastName3"
-                }
-            };
+                FirstName = "FirstName1",
+                LastName = "LastName1"
+            });
+
+            Customers.Add(new Customer
+            {
+                FirstName = "FirstName2",
+                LastName = "LastName2"
+            });
         }
     }
 }

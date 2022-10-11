@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BuildFlow.Services;
+using BuildFlow.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +17,7 @@ namespace BuildFlow.View
         public HomePage()
         {
             InitializeComponent();
-            NavigationPage.SetHasBackButton(this, false);
+            BindingContext = new HomeViewModel(DependencyService.Get<INavService>());
         }
     }
 }

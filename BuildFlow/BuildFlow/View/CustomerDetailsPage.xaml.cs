@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BuildFlow.Model;
+using BuildFlow.Services;
 using BuildFlow.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -18,7 +19,7 @@ namespace BuildFlow.View
         {
             InitializeComponent();
 
-            BindingContext = new CustomerDetailsViewModel(selectedCustomer);
+            BindingContext = new CustomerDetailsViewModel(DependencyService.Get<INavService>());
 
             customerFirstNameEntry.Text = ViewModel.SelectedCustomer.FirstName;
             customerLastNameEntry.Text = ViewModel.SelectedCustomer.LastName;

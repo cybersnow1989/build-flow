@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BuildFlow.Model;
+using BuildFlow.Services;
 using BuildFlow.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -16,7 +17,7 @@ namespace BuildFlow.View
         public CustomerPage()
         {
             InitializeComponent();
-            BindingContext = new CustomerViewModel();
+            BindingContext = new CustomerViewModel(DependencyService.Get<INavService>());
         }
 
         private void Customers_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
