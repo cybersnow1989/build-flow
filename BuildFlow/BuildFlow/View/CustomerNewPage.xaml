@@ -4,12 +4,20 @@
              x:Class="BuildFlow.View.CustomerNewPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save"
-                     Clicked="Save_OnClicked"/>
+                     Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Entry x:Name="customerFirstNameEntry"
-                   Placeholder="First Name"/>
-        </StackLayout>
+        <TableView Intent="Form">
+            <TableView.Root>
+                <TableSection>
+                    <EntryCell x:Name="customerFirstNameEntry"
+                               Label="First Name"
+                               Text="{Binding FirstName}"/>
+                    <EntryCell x:Name="customerLastNameEntry"
+                               Label="Last Name"
+                               Text="{Binding LastName}"/>
+                </TableSection>
+            </TableView.Root>
+        </TableView>
     </ContentPage.Content>
 </ContentPage>

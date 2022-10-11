@@ -30,5 +30,10 @@ namespace BuildFlow.View
 
             customers.SelectedItem = null;
         }
+
+        private void Add_OnClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new CustomerNewPage());
+        }
     }
 }
