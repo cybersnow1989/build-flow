@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
-namespace BuildFlow
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace BuildFlow.View
 {
-    public partial class MainPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class JobDetailsPage : ContentPage
     {
-        public MainPage()
+        public JobDetailsPage()
         {
             InitializeComponent();
         }

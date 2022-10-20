@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BuildFlow.View.CustomerDetailsPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save"
+                     Command="{Binding SaveCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <TableView Intent="Form">
+            <TableView.Root>
+                <TableSection>
+                    <EntryCell x:Name="customerFirstNameEntry"
+                               Label="First Name"
+                               Text="{Binding SelectedCustomer.FirstName}"/>
+                    <EntryCell x:Name="customerLastNameEntry"
+                               Label="Last Name"
+                               Text="{Binding SelectedCustomer.LastName}"/>
+                </TableSection>
+            </TableView.Root>
+        </TableView>
+    </ContentPage.Content>
+
+</ContentPage>
