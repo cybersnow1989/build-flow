@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace BuildFlow.ViewModel
 {
-    public class CustomerDetailsViewModel : BaseViewModel<Customer>
+    public class CustomerDetailsViewModel : BaseValidationViewModel<Customer>
     {
         private Customer _selectedCustomer;
 

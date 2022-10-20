@@ -20,7 +20,14 @@ namespace BuildFlow.View
         {
             InitializeComponent();
 
+            BindingContextChanged += CustomerDetailsPage_BindingContextChanged; 
+
             BindingContext = new CustomerDetailsViewModel(DependencyService.Get<INavService>());
+        }
+
+        private void CustomerDetailsPage_BindingContextChanged(object sender, EventArgs e)
+        {
+            ViewModel.Errors
         }
 
         protected override void OnAppearing()
