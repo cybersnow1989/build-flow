@@ -4,17 +4,23 @@
              x:Class="BuildFlow.View.CustomerDetailsPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save"/>
+        <ToolbarItem Text="Save"
+                     Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout Margin="15">
-            <Entry x:Name="customerFirstNameEntry"
-                   Text="{Binding SelectedCustomer.FirstName}"/>
-            <Entry x:Name="customerLastNameEntry"
-                   Text="{Binding SelectedCustomer.LastName}"/>
-            <Button Text="Delete"/>
-        </StackLayout>
+        <TableView Intent="Form">
+            <TableView.Root>
+                <TableSection>
+                    <EntryCell x:Name="customerFirstNameEntry"
+                               Label="First Name"
+                               Text="{Binding SelectedCustomer.FirstName}"/>
+                    <EntryCell x:Name="customerLastNameEntry"
+                               Label="Last Name"
+                               Text="{Binding SelectedCustomer.LastName}"/>
+                </TableSection>
+            </TableView.Root>
+        </TableView>
     </ContentPage.Content>
 
 </ContentPage>

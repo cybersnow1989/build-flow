@@ -20,50 +20,31 @@ namespace BuildFlow.View
         {
             InitializeComponent();
 
-            BindingContextChanged += CustomerDetailsPage_BindingContextChanged; 
+            BindingContextChanged += CustomerDetailsPage_BindingContextChanged;
 
             BindingContext = new CustomerDetailsViewModel(DependencyService.Get<INavService>());
         }
 
         private void CustomerDetailsPage_BindingContextChanged(object sender, EventArgs e)
         {
-            ViewModel.Errors
+            ViewModel.ErrorsChanged += ViewModel_ErrorsChanged;
         }
 
-        protected override void OnAppearing()
+        private void ViewModel_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
-            base.OnAppearing();
+            var propertyHasErrors = (ViewModel.GetErrors(e.PropertyName) as List<string>)?.Any() == true;
 
-            if (ViewModel != null)
+            switch (e.PropertyName)
             {
-                ViewModel.PropertyChanged += OnViewModelPropertyChanged;
+                case nameof(ViewModel.SelectedCustomer.FirstName):
+                    customerFirstNameEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.SelectedCustomer.LastName):
+                    customerLastNameEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                default:
+                    break;
             }
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-
-            if (ViewModel != null)
-            {
-                ViewModel.PropertyChanged += OnViewModelPropertyChanged;
-            }
-        }
-
-        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(CustomerDetailsViewModel.SelectedCustomer))
-            {
-                UpdateCustomer();
-            }
-        }
-
-        private void UpdateCustomer()
-        {
-            if(ViewModel.SelectedCustomer == null) return;
-
-            customerFirstNameEntry.Text = ViewModel.SelectedCustomer.FirstName;
-            customerLastNameEntry.Text = ViewModel.SelectedCustomer.LastName;
         }
     }
 }

@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using BuildFlow.Model;
 using BuildFlow.Services;
 using Xamarin.Forms;
 
 namespace BuildFlow.ViewModel
 {
-    public class CustomerDetailsViewModel : BaseValidationViewModel<Customer>
+    public class CustomerDetailsViewModel : BaseValidationViewModel<Customer>//BaseViewModel<Customer>
     {
+        private Command _saveCommand;
+        public Command SaveCommand => _saveCommand ?? (_saveCommand = new Command(async () => await Save(), CanSave));
+
         private Customer _selectedCustomer;
 
         public Customer SelectedCustomer
@@ -29,5 +33,12 @@ namespace BuildFlow.ViewModel
         {
             SelectedCustomer = selectedCustomer;
         }
+
+        async Task Save()
+        {
+            //Do something
+        }
+
+        bool CanSave() => !string.IsNullOrWhiteSpace(SelectedCustomer.FirstName);
     }
 }
