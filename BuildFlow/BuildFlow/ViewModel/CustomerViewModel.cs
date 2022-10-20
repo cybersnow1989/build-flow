@@ -11,6 +11,9 @@ namespace BuildFlow.ViewModel
 {
     public class CustomerViewModel : BaseViewModel
     {
+        public Command AddCommand => new Command(async () => await NavService.NavigateTo<CustomerNewViewModel>());
+        public Command ViewCommand => new Command<Customer>(async customer => await NavService.NavigateTo<CustomerDetailsViewModel, Customer>(customer));
+
         private ObservableCollection<Customer> _customers;
 
         public ObservableCollection<Customer> Customers
@@ -35,19 +38,13 @@ namespace BuildFlow.ViewModel
 
         void LoadCustomers()
         {
+            var customers = Customer.GetCustomers();
             Customers.Clear();
 
-            Customers.Add(new Customer
+            foreach (Customer customer in customers)
             {
-                FirstName = "FirstName1",
-                LastName = "LastName1"
-            });
-
-            Customers.Add(new Customer
-            {
-                FirstName = "FirstName2",
-                LastName = "LastName2"
-            });
+                Customers.Add(customer);
+            }
         }
     }
 }

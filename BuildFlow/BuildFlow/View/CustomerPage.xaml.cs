@@ -14,27 +14,18 @@ namespace BuildFlow.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CustomerPage : ContentPage
     {
+        CustomerViewModel ViewModel => BindingContext as CustomerViewModel;
         public CustomerPage()
         {
             InitializeComponent();
             BindingContext = new CustomerViewModel(DependencyService.Get<INavService>());
         }
 
-        private void Customers_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        protected override void OnAppearing()
         {
-            var selectedCustomer = (Customer) e.CurrentSelection.FirstOrDefault();
+            base.OnAppearing();
 
-            if (selectedCustomer != null)
-            {
-                Navigation.PushAsync(new CustomerDetailsPage(selectedCustomer));
-            }
-
-            customers.SelectedItem = null;
-        }
-
-        private void Add_OnClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new CustomerNewPage());
+            ViewModel?.Init();
         }
     }
 }

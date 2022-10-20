@@ -9,8 +9,10 @@
 
     <ContentPage.Content>
         <StackLayout Margin="15">
-            <Entry x:Name="customerFirstNameEntry"/>
-            <Entry x:Name="customerLastNameEntry"/>
+            <Entry x:Name="customerFirstNameEntry"
+                   Text="{Binding SelectedCustomer.FirstName}"/>
+            <Entry x:Name="customerLastNameEntry"
+                   Text="{Binding SelectedCustomer.LastName}"/>
             <Button Text="Delete"/>
         </StackLayout>
     </ContentPage.Content>

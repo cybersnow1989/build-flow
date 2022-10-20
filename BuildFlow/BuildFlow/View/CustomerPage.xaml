@@ -6,16 +6,19 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add"
-                     Clicked="Add_OnClicked"/>
+                     Command="{Binding AddCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <CollectionView x:Name="customers"
                         ItemsSource="{Binding Customers}"
-                        SelectionMode="Single"
-                        SelectionChanged="Customers_OnSelectionChanged">
+                        SelectionMode="Single">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CustomerViewModel}}, Path=ViewCommand}"
+                                                  CommandParameter="{Binding}"/>
+                        </Grid.GestureRecognizers>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>

@@ -14,10 +14,19 @@ namespace BuildFlow.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : TabbedPage
     {
+        HomeViewModel ViewModel => BindingContext as HomeViewModel;
         public HomePage()
         {
             InitializeComponent();
             BindingContext = new HomeViewModel(DependencyService.Get<INavService>());
+            NavigationPage.SetHasBackButton(this, false);
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            ViewModel?.Init();
             NavigationPage.SetHasBackButton(this, false);
         }
     }
