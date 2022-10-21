@@ -6,6 +6,8 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save"
                      Command="{Binding SaveCommand}"/>
+        <ToolbarItem Text="Delete"
+                     Command="{Binding DeleteCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -14,10 +16,10 @@
                 <TableSection>
                     <EntryCell x:Name="customerFirstNameEntry"
                                Label="First Name"
-                               Text="{Binding SelectedCustomer.FirstName}"/>
+                               Text="{Binding FirstName}"/>
                     <EntryCell x:Name="customerLastNameEntry"
                                Label="Last Name"
-                               Text="{Binding SelectedCustomer.LastName}"/>
+                               Text="{Binding LastName}"/>
                 </TableSection>
             </TableView.Root>
         </TableView>
