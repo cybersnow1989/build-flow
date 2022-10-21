@@ -36,10 +36,10 @@ namespace BuildFlow.View
 
             switch (e.PropertyName)
             {
-                case nameof(ViewModel.SelectedCustomer.FirstName):
+                case nameof(ViewModel.FirstName):
                     customerFirstNameEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
                     break;
-                case nameof(ViewModel.SelectedCustomer.LastName):
+                case nameof(ViewModel.LastName):
                     customerLastNameEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
                     break;
                 default:
