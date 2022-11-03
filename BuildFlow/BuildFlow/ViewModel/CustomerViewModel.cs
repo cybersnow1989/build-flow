@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using BuildFlow.Model;
 using BuildFlow.Services;
@@ -13,22 +15,38 @@ namespace BuildFlow.ViewModel
     {
         public Command AddCommand => new Command(async () => await NavService.NavigateTo<CustomerNewViewModel>());
         public Command ViewCommand => new Command<Customer>(async customer => await NavService.NavigateTo<CustomerDetailsViewModel, Customer>(customer));
+        public Command SearchCommand => new Command(async () => await Search());
 
-        private ObservableCollection<Customer> _customers;
+        private string _searchText;
 
-        public ObservableCollection<Customer> Customers
+        public string SearchText
         {
-            get => _customers;
+            get => _searchText;
             set
             {
-                _customers = value;
+                _searchText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<Customer> Customers { get; set; }
+
+        private ObservableCollection<Customer> _customerList;
+
+        public ObservableCollection<Customer> CustomerList
+        {
+            get => _customerList;
+            set
+            {
+                _customerList = value;
                 OnPropertyChanged();
             }
         }
 
         public CustomerViewModel(INavService navService) : base(navService)
         {
-            Customers = new ObservableCollection<Customer>();
+            CustomerList = new ObservableCollection<Customer>();
+            Customers = new List<Customer>();
         }
 
         public override void Init()
@@ -40,10 +58,23 @@ namespace BuildFlow.ViewModel
         {
             var customers = Customer.GetCustomers();
             Customers.Clear();
+            CustomerList.Clear();
 
             foreach (Customer customer in customers)
             {
                 Customers.Add(customer);
+                CustomerList.Add(customer);
+            }
+        }
+
+        async Task Search()
+        {
+            var results = Customers.Where(x => x.FirstName.ToLower().Contains(SearchText.ToLower()) || x.LastName.ToLower().Contains(SearchText.ToLower())).ToList();
+            CustomerList.Clear();
+
+            foreach (var result in results)
+            {
+                CustomerList.Add(result);
             }
         }
     }

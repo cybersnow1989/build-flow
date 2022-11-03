@@ -22,6 +22,12 @@ namespace BuildFlow
             navService.RegisterViewMapping(typeof(CustomerViewModel), typeof(CustomerPage));
             navService.RegisterViewMapping(typeof(CustomerNewViewModel), typeof(CustomerNewPage));
             navService.RegisterViewMapping(typeof(CustomerDetailsViewModel), typeof(CustomerDetailsPage));
+            navService.RegisterViewMapping(typeof(JobViewModel), typeof(JobPage));
+            navService.RegisterViewMapping(typeof(JobNewViewModel), typeof(JobNewPage));
+            navService.RegisterViewMapping(typeof(JobDetailsViewModel), typeof(JobDetailsPage));
+            navService.RegisterViewMapping(typeof(InvoiceViewModel), typeof(InvoicePage));
+            navService.RegisterViewMapping(typeof(InvoiceNewViewModel), typeof(InvoiceNewPage));
+            navService.RegisterViewMapping(typeof(InvoiceDetailsViewModel), typeof(InvoiceDetailsPage));
 
             MainPage = loginPage;
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BuildFlow.Services;
+using BuildFlow.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,8 @@ namespace BuildFlow.View
         public InvoiceNewPage()
         {
             InitializeComponent();
+
+            BindingContext = new InvoiceNewViewModel(DependencyService.Get<INavService>());
         }
     }
 }
