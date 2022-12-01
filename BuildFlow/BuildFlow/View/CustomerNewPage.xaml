@@ -13,11 +13,26 @@
             <TableView.Root>
                 <TableSection>
                     <EntryCell x:Name="customerFirstNameEntry"
-                               Label="First Name"
+                               Label="First Name: "
                                Text="{Binding FirstName}"/>
                     <EntryCell x:Name="customerLastNameEntry"
-                               Label="Last Name"
+                               Label="Last Name: "
                                Text="{Binding LastName}"/>
+                    <EntryCell x:Name="customerEmailEntry"
+                               Label="Email: "
+                               Text="{Binding Email}"/>
+                    <EntryCell x:Name="customerAddressEntry"
+                               Label="Address: "
+                               Text="{Binding Address}"/>
+                    <EntryCell x:Name="customerCityEntry"
+                               Label="City: "
+                               Text="{Binding City}"/>
+                    <EntryCell x:Name="customerStateEntry"
+                               Label="State: "
+                               Text="{Binding State}"/>
+                    <EntryCell x:Name="customerZipCodeEntry"
+                               Label="Zip Code: "
+                               Text="{Binding ZipCode}"/>
                 </TableSection>
             </TableView.Root>
         </TableView>

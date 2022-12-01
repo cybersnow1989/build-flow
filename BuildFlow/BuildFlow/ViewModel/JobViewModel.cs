@@ -68,7 +68,7 @@ namespace BuildFlow.ViewModel
 
         async Task Search()
         {
-            var results = Jobs.Where(x => x.JobName.ToLower().Contains(SearchText.ToLower())).ToList();
+            var results = Jobs.Where(x => x.JobTitle.ToLower().Contains(SearchText.ToLower())).ToList();
             JobList.Clear();
 
             foreach (var result in results)

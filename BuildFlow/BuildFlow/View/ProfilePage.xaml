@@ -2,9 +2,39 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BuildFlow.View.ProfilePage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save"
+                     Command="{Binding SaveCommand}"/>
+        <ToolbarItem Text="Reports"
+                     Command="{Binding ViewReportsCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to the Profile Page!"/>
-        </StackLayout>
+        <TableView Intent="Form">
+            <TableView.Root>
+                <TableSection>
+                    <EntryCell x:Name="userFirstNameEntry"
+                               Label="First Name: "
+                               Text="{Binding FirstName}"/>
+                    <EntryCell x:Name="userLastNameEntry"
+                               Label="Last Name: "
+                               Text="{Binding LastName}"/>
+                    <EntryCell x:Name="userCompanyNameEntry"
+                               Label="Company Name: "
+                               Text="{Binding CompanyName}"/>
+                    <EntryCell x:Name="userAddressEntry"
+                               Label="Address: "
+                               Text="{Binding Address}"/>
+                    <EntryCell x:Name="userCityEntry"
+                               Label="City: "
+                               Text="{Binding City}"/>
+                    <EntryCell x:Name="userStateEntry"
+                               Label="State: "
+                               Text="{Binding State}"/>
+                    <EntryCell x:Name="userZipCodeEntry"
+                               Label="Zip Code: "
+                               Text="{Binding ZipCode}"/>
+                </TableSection>
+            </TableView.Root>
+        </TableView>
     </ContentPage.Content>
 </ContentPage>

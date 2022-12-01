@@ -42,6 +42,21 @@ namespace BuildFlow.View
                 case nameof(ViewModel.LastName):
                     customerLastNameEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
                     break;
+                case nameof(ViewModel.Email):
+                    customerEmailEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.Address):
+                    customerAddressEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.City):
+                    customerCityEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.State):
+                    customerStateEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.ZipCode):
+                    customerZipCodeEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
                 default:
                     break;
             }

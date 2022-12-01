@@ -69,7 +69,13 @@ namespace BuildFlow.ViewModel
 
         async Task Search()
         {
-            var results = Customers.Where(x => x.FirstName.ToLower().Contains(SearchText.ToLower()) || x.LastName.ToLower().Contains(SearchText.ToLower())).ToList();
+            var results = Customers.Where(x => x.FirstName.ToLower().Contains(SearchText.ToLower())
+                                               || x.LastName.ToLower().Contains(SearchText.ToLower())
+                                               || x.Address.ToLower().Contains(SearchText.ToLower())
+                                               || x.City.ToLower().Contains(SearchText.ToLower())
+                                               || x.State.ToLower().Contains(SearchText.ToLower())
+                                               || x.Email.ToLower().Contains(SearchText.ToLower())).ToList();
+
             CustomerList.Clear();
 
             foreach (var result in results)

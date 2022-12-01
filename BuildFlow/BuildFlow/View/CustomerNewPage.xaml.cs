@@ -42,35 +42,24 @@ namespace BuildFlow.View
                 case nameof(ViewModel.LastName):
                     customerLastNameEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
                     break;
+                case nameof(ViewModel.Email):
+                    customerEmailEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.Address):
+                    customerAddressEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.City):
+                    customerCityEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.State):
+                    customerStateEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
+                case nameof(ViewModel.ZipCode):
+                    customerZipCodeEntry.LabelColor = propertyHasErrors ? Color.Red : Color.Black;
+                    break;
                 default:
                     break;
             }
         }
-
-        //private void Save_OnClicked(object sender, EventArgs e)
-        //{
-        //    if (!string.IsNullOrEmpty(customerFirstNameEntry.Text))
-        //    {
-        //        Customer newCustomer = new Customer()
-        //        {
-        //            FirstName = customerFirstNameEntry.Text
-        //        };
-
-        //        using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-        //        {
-        //            conn.CreateTable<Customer>();
-        //            int rowsAffected = conn.Insert(newCustomer);
-
-        //            if (rowsAffected > 0)
-        //            {
-        //                DisplayAlert("Success", "Customer saved", "Ok");
-        //            }
-        //            else
-        //                DisplayAlert("Failure", "Customer was not saved, please try again", "Ok");
-        //        }
-
-        //        Navigation.PushAsync(new HomePage()); 
-        //    }
-        //}
     }
 }

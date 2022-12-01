@@ -16,6 +16,8 @@ namespace BuildFlow.ViewModel
         private Command _deleteCommand;
         public Command DeleteCommand => _deleteCommand ?? (_deleteCommand = new Command(async () => await Delete()));
 
+
+        #region Properties
         public Customer SelectedCustomer { get; set; }
 
         private string _firstName;
@@ -44,8 +46,79 @@ namespace BuildFlow.ViewModel
             }
         }
 
+        private string _email;
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_email), "Email name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+
+        private string _address;
+        public string Address
+        {
+            get => _address;
+            set
+            {
+                _address = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_address), "Address name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+
+        private string _city;
+        public string City
+        {
+            get => _city;
+            set
+            {
+                _city = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_city), "City name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+
+        private string _state;
+        public string State
+        {
+            get => _state;
+            set
+            {
+                _state = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_state), "State name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+
+        private string _zipCode;
+        public string ZipCode
+        {
+            get => _zipCode;
+            set
+            {
+                _zipCode = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_zipCode), "Last name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+        #endregion
+
         public CustomerDetailsViewModel(INavService navService) : base(navService)
         {
+        }
+
+        public override void Init()
+        {
+            throw new CustomerNotProvidedException();
         }
 
         public override void Init(Customer selectedCustomer)
@@ -53,6 +126,11 @@ namespace BuildFlow.ViewModel
             SelectedCustomer = selectedCustomer;
             FirstName = selectedCustomer.FirstName;
             LastName = selectedCustomer.LastName;
+            Email = selectedCustomer.Email;
+            Address = selectedCustomer.Address;
+            City = selectedCustomer.City;
+            State = selectedCustomer.State;
+            ZipCode = selectedCustomer.ZipCode;
         }
 
         async Task Save()

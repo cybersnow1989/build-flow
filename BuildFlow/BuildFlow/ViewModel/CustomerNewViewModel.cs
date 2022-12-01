@@ -39,6 +39,66 @@ namespace BuildFlow.ViewModel
                 SaveCommand.ChangeCanExecute();
             }
         }
+        private string _email;
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_email), "Email name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+        private string _address;
+        public string Address
+        {
+            get => _address;
+            set
+            {
+                _address = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_address), "Address name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+        private string _city;
+        public string City
+        {
+            get => _city;
+            set
+            {
+                _city = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_city), "City name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+        private string _state;
+        public string State
+        {
+            get => _state;
+            set
+            {
+                _state = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_state), "State name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+        private string _zipCode;
+        public string ZipCode
+        {
+            get => _zipCode;
+            set
+            {
+                _zipCode = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_zipCode), "Last name must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
 
         public CustomerNewViewModel(INavService navService) : base(navService)
         {
@@ -53,10 +113,15 @@ namespace BuildFlow.ViewModel
             var newCustomer = new Customer
             {
                 FirstName = FirstName,
-                LastName = LastName
+                LastName = LastName,
+                Email = Email,
+                Address = Address,
+                City = City,
+                State = State,
+                ZipCode = ZipCode
             };
 
-            if (Customer.InsertCustomer(newCustomer))
+            if (Customer.InsertCustomer(newCustomer).ID != 0)
             {
                 await App.Current.MainPage.DisplayAlert("Success", "Customer successfully saved.", "Ok");
             }
@@ -68,6 +133,13 @@ namespace BuildFlow.ViewModel
             await NavService.GoBack();
         }
 
-        bool CanSave() => !string.IsNullOrWhiteSpace(FirstName) && !HasErrors;
+        bool CanSave() => !string.IsNullOrWhiteSpace(FirstName)
+                          && !string.IsNullOrWhiteSpace(LastName)
+                          && !string.IsNullOrWhiteSpace(Email)
+                          && !string.IsNullOrWhiteSpace(Address)
+                          && !string.IsNullOrWhiteSpace(City)
+                          && !string.IsNullOrWhiteSpace(State)
+                          && !string.IsNullOrWhiteSpace(ZipCode)
+                          && !HasErrors;
     }
 }

@@ -11,7 +11,43 @@
     <ContentPage.Content>
         <StackLayout>
             <StackLayout>
-                <Entry Text="{Binding JobName}"/>
+                <Grid Padding="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0"
+                           VerticalOptions="Center"
+                           HorizontalTextAlignment="End"
+                           x:Name="jobTitleLabel"
+                           Text="Job Title:"/>
+                    <Entry Grid.Column="1"
+                           Grid.ColumnSpan="3"
+                           VerticalTextAlignment="End"
+                           FontSize="Small"
+                           Placeholder="Enter a Job Title"
+                           Text="{Binding JobTitle}"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="1"
+                           VerticalOptions="Center"
+                           HorizontalTextAlignment="End"
+                           x:Name="customerTitleLabel"
+                           Text="Customer:"/>
+                    <Entry Grid.Column="1"
+                           Grid.ColumnSpan="3"
+                           Grid.Row="1"
+                           VerticalTextAlignment="End"
+                           IsReadOnly="True"
+                           FontSize="Small"
+                           Placeholder="Search for and select a customer below"
+                           Text="{Binding JobCustomerName}"/>
+                </Grid>
             </StackLayout>
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="CenterAndExpand">
@@ -25,6 +61,8 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Entry Grid.Column="0"
+                           Placeholder="Search by Name, Address, or Email"
+                           FontSize="Small"
                            Text="{Binding SearchText}"/>
                     <Button Grid.Column="1"
                             Text="Search"
@@ -42,17 +80,22 @@
                                                       CommandParameter="{Binding}"/>
                             </Grid.GestureRecognizers>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20*"/>
+                                <ColumnDefinition Width="20*"/>
+                                <ColumnDefinition Width="45*"/>
+                                <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="1"
+                            <Label Grid.Column="0"
                                    Text="{Binding FirstName}"/>
-                            <Label Grid.Column="2"
+                            <Label Grid.Column="1"
                                    Text="{Binding LastName}"/>
+                            <Label Grid.Column="2"
+                                   Text="{Binding Email}"/>
+                            <Label Grid.Column="3"
+                                   Text="{Binding ID}"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BuildFlow.View.ReportsPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout>
+                <Button Text="CustomersByZip"
+                        Command="{Binding CustomersByZipReport}"/>
+                <Button Text="InvoicesByCustomer"
+                        Command="{Binding InvoicesByCustomerReport}"/>
+            </StackLayout>
+            <CollectionView ItemsSource="{Binding CustomerReportList}"
+                            SelectionMode="Single"
+                            IsVisible="{Binding CustomerReportVisible}">
+                <CollectionView.Header>
+                    <Label Text="Customers by Zip Code"/>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0"
+                                   Grid.Row="0"
+                                   Text="{Binding ZipCode}"/>
+                            <CollectionView Grid.Row="1"
+                                            Grid.Column="1"
+                                            ItemsSource="{Binding CustomerList}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Text="{Binding FirstName}"/>
+                                            <Label Grid.Column="1" Text="{Binding LastName}"/>
+                                            <Label Grid.Column="2" Text="{Binding Email}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <CollectionView ItemsSource="{Binding InvoiceReportList}"
+                            SelectionMode="Single"
+                            IsVisible="{Binding InvoiceReportVisible}">
+                <CollectionView.Header>
+                    <Label Text="Invoices By Customer"/>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0"
+                                   Grid.Row="0"
+                                   Text="{Binding Customer}"/>
+                            <CollectionView Grid.Row="1"
+                                            Grid.Column="1"
+                                            ItemsSource="{Binding InvoiceList}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Text="{Binding ID, StringFormat='ID: {0}'}"/>
+                                            <Label Grid.Column="1" Text="{Binding InvoiceTotal, StringFormat='Total: {0:C}'}"/>
+                                            <Label Grid.Column="2" Text="{Binding CreatedOn, StringFormat='{0:MMMM dd, yyyy}'}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

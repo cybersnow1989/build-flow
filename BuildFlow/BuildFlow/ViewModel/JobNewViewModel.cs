@@ -15,8 +15,11 @@ namespace BuildFlow.ViewModel
         private Command _saveCommand;
         public Command SaveCommand => _saveCommand ?? (_saveCommand = new Command(async () => await Save(), CanSave));
 
-        public Command SelectCustomerCommand => new Command<Customer>(async customer => await SetCustomerID(customer));
+        public Command SelectCustomerCommand => new Command<Customer>(async customer => await SelectCustomer(customer));
         public Command SearchCommand => new Command(async () => await Search());
+
+
+        #region Properties
 
         private string _searchText;
 
@@ -30,35 +33,23 @@ namespace BuildFlow.ViewModel
             }
         }
 
-        private string _jobName;
+        private string _jobTitle;
 
-        public string JobName
+        public string JobTitle
         {
-            get => _jobName;
+            get => _jobTitle;
             set
             {
-                _jobName = value;
-                Validate(() => !string.IsNullOrWhiteSpace(_jobName), "Job name must be provided.");
-                OnPropertyChanged();
-                SaveCommand.ChangeCanExecute();
-            }
-        }
-
-        private int _customerID;
-
-        public int CustomerID
-        {
-            get => _customerID;
-            set
-            {
-                _customerID = value;
-                Validate(() => Helpers.Validators.CheckIfZeroOrNegative(_customerID), "Customer must be selected.");
+                _jobTitle = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_jobTitle), "Job title must be provided.");
                 OnPropertyChanged();
                 SaveCommand.ChangeCanExecute();
             }
         }
 
         public List<Customer> Customers { get; set; }
+
+        public Customer JobCustomer { get; set; }
 
         private ObservableCollection<Customer> _customerList;
 
@@ -71,6 +62,21 @@ namespace BuildFlow.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private string _jobCustomerName;
+
+        public string JobCustomerName
+        {
+            get => _jobCustomerName;
+            set
+            {
+                _jobCustomerName = value;
+                Validate(() => !string.IsNullOrWhiteSpace(_jobCustomerName), "Customer must be provided.");
+                OnPropertyChanged();
+                SaveCommand.ChangeCanExecute();
+            }
+        }
+        #endregion
 
         public JobNewViewModel(INavService navService) : base(navService)
         {
@@ -100,11 +106,11 @@ namespace BuildFlow.ViewModel
         {
             var newJob = new Job
             {
-                JobName = JobName,
-                CustomerID = CustomerID
+                JobTitle = JobTitle,
+                CustomerID = JobCustomer.ID,
             };
 
-            if (Job.InsertJob(newJob))
+            if (Job.InsertJob(newJob).ID != 0)
             {
                 await App.Current.MainPage.DisplayAlert("Success", "Job successfully saved.", "Ok");
             }
@@ -116,16 +122,20 @@ namespace BuildFlow.ViewModel
             await NavService.GoBack();
         }
 
-        bool CanSave() => !string.IsNullOrWhiteSpace(JobName) && !HasErrors;
-
-        async Task SetCustomerID(Customer customer)
+        async Task SelectCustomer(Customer customer)
         {
-            CustomerID = customer.ID;
+            JobCustomer = customer;
+            JobCustomerName = $"{customer.LastName}, {customer.FirstName} (ID: {customer.ID})";
         }
 
         async Task Search()
         {
-            var results = Customers.Where(x => x.FirstName.ToLower().Contains(SearchText.ToLower()) || x.LastName.ToLower().Contains(SearchText.ToLower())).ToList();
+            var results = Customers.Where(x => x.FirstName.ToLower().Contains(SearchText.ToLower())
+                                               || x.LastName.ToLower().Contains(SearchText.ToLower())
+                                               || x.Address.ToLower().Contains(SearchText.ToLower())
+                                               || x.City.ToLower().Contains(SearchText.ToLower())
+                                               || x.State.ToLower().Contains(SearchText.ToLower())
+                                               || x.Email.ToLower().Contains(SearchText.ToLower())).ToList();
             CustomerList.Clear();
 
             foreach (var result in results)
@@ -133,5 +143,9 @@ namespace BuildFlow.ViewModel
                 CustomerList.Add(result);
             }
         }
+
+        bool CanSave() => !string.IsNullOrWhiteSpace(JobTitle)
+                          && !string.IsNullOrWhiteSpace(JobCustomerName)
+                          && !HasErrors;
     }
 }

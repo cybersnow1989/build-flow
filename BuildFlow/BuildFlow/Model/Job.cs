@@ -12,22 +12,15 @@ namespace BuildFlow.Model
         public int ID { get; set; }
         public int CustomerID { get; set; }
         public int InvoiceID { get; set; }
-        public string JobName { get; set; }
+        public string JobTitle { get; set; }
 
-        public static bool InsertJob(Job job)
+        public static Job InsertJob(Job job)
         {
             using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
             {
                 conn.CreateTable<Job>();
-                int rows = conn.Insert(job);
-                if (rows > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                conn.Insert(job);
+                return job;
             }
         }
 

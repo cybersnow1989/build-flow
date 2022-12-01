@@ -18,8 +18,26 @@ namespace BuildFlow.ViewModel
         public Command SaveCommand => _saveCommand ?? (_saveCommand = new Command(async () => await Save(), CanSave));
         public Command AddItemCommand => new Command(async () => await AddItem());
 
+        public Command SelectLineItemCommand => new Command<LineItem>(async lineItem => await SelectLineItem(lineItem));
+        public Command UpdateLineItemCommand => new Command(async () => await UpdateLineItem(SelectedLineItem));
+        public Command DeleteLineItemCommand => new Command(async () => await DeleteLineItem(SelectedLineItem));
+
+
+        #region Properties
 
         public Job InvoiceJob { get; set; }
+
+        private LineItem _selectedLineItem;
+
+        public LineItem SelectedLineItem
+        {
+            get => _selectedLineItem;
+            set
+            {
+                _selectedLineItem = value;
+                OnPropertyChanged();
+            }
+        }
 
         private ObservableCollection<LineItem> _lineItems;
 
@@ -57,9 +75,8 @@ namespace BuildFlow.ViewModel
             }
         }
 
-        private decimal _itemPrice;
-
-        public decimal ItemPrice
+        private string _itemPrice;
+        public string ItemPrice
         {
             get => _itemPrice;
             set
@@ -68,6 +85,30 @@ namespace BuildFlow.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private bool _updateButtonEnabled;
+
+        public bool UpdateButtonEnabled
+        {
+            get => _updateButtonEnabled;
+            set
+            {
+                _updateButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _deleteButtonEnabled;
+
+        public bool DeleteButtonEnabled
+        {
+            get => _deleteButtonEnabled;
+            set
+            {
+                _deleteButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
 
         public InvoiceNewViewModel(INavService navService) : base(navService)
         {
@@ -86,21 +127,35 @@ namespace BuildFlow.ViewModel
             {
                 JobID = InvoiceJob.ID,
                 InvoiceType = InvoiceType.Regular,
-                InvoiceTotal = InvoiceTotal
+                InvoiceTotal = InvoiceTotal,
+                CreatedOn = DateTime.Now
             };
 
-            bool insertInvoiceSuccess = Invoice.InsertInvoice(newInvoice);
-
-            var insertedInvoice = Invoice.GetInvoiceByJobID(newInvoice.JobID);
+            var insertedInvoice = Invoice.InsertInvoice(newInvoice);
 
             foreach (LineItem lineItem in LineItems)
             {
                 lineItem.InvoiceID = insertedInvoice.ID;
             }
 
-            bool insertLineItemsSuccess = LineItem.InsertLineItems(LineItems.ToList());
+            var insertedLineItems= LineItem.InsertLineItems(LineItems.ToList());
 
-            if (insertInvoiceSuccess && insertLineItemsSuccess)
+            bool insertLineItemsSuccess = false;
+
+            foreach (LineItem insertedLineItem in insertedLineItems)
+            {
+                if (insertedLineItem.ID != 0)
+                {
+                    insertLineItemsSuccess = true;
+                }
+                else
+                {
+                    insertLineItemsSuccess = false;
+                    break;
+                }
+            }
+
+            if (insertedInvoice.ID != 0 && insertLineItemsSuccess)
             {
                 await App.Current.MainPage.DisplayAlert("Success", "Invoice successfully saved.", "Ok");
             }
@@ -109,22 +164,107 @@ namespace BuildFlow.ViewModel
                 await App.Current.MainPage.DisplayAlert("Failure", "Invoice not saved.", "Ok");
             }
 
-            await NavService.GoBack();
+            await NavService.NavigateTo<JobDetailsViewModel, Job>(InvoiceJob);
         }
-
-        bool CanSave() => !HasErrors;
 
         async Task AddItem()
         {
-            var newLineItem = new LineItem
+            string errorMessage = string.Empty;
+            bool isError = false;
+            decimal itemPriceDecimal;
+
+            Decimal.TryParse(ItemPrice, out itemPriceDecimal);
+
+            if (string.IsNullOrWhiteSpace(ItemDescription))
             {
-                ItemDescription = ItemDescription,
-                ItemPrice = ItemPrice
-            };
-            LineItems.Add(newLineItem);
-            InvoiceTotal = LineItems.Sum(x => x.ItemPrice);
-            ItemPrice = 0;
-            ItemDescription = string.Empty;
+                errorMessage += "Item Description is required." + Environment.NewLine;
+                isError = true;
+            }
+
+            if (itemPriceDecimal == 0m)
+            {
+                errorMessage += "Item price cannot be zero.";
+                isError = true;
+            }
+
+            if (!isError)
+            {
+                var newLineItem = new LineItem
+                {
+                    ItemDescription = ItemDescription,
+                    ItemPrice = itemPriceDecimal
+                };
+                LineItems.Add(newLineItem);
+                InvoiceTotal = LineItems.Sum(x => x.ItemPrice);
+                ItemPrice = String.Empty;
+                ItemDescription = string.Empty;
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Failure", errorMessage, "Ok");
+            }
         }
+
+        async Task SelectLineItem(LineItem lineItem)
+        {
+
+            SelectedLineItem = lineItem;
+            ItemDescription = lineItem.ItemDescription;
+            ItemPrice = lineItem.ItemPrice.ToString();
+            UpdateButtonEnabled = true;
+            DeleteButtonEnabled = true;
+        }
+
+        async Task UpdateLineItem(LineItem lineItem)
+        {
+            string errorMessage = string.Empty;
+            bool isError = false;
+            decimal itemPriceDecimal;
+
+            Decimal.TryParse(ItemPrice, out itemPriceDecimal);
+
+            if (string.IsNullOrWhiteSpace(ItemDescription))
+            {
+                errorMessage += "Item Description is required." + Environment.NewLine;
+                isError = true;
+            }
+
+            if (itemPriceDecimal == 0m)
+            {
+                errorMessage += "Item price cannot be zero.";
+                isError = true;
+            }
+
+            if (!isError)
+            {
+                int newIndex = LineItems.IndexOf(lineItem);
+                LineItems.Remove(lineItem);
+
+                var updateLineItem = new LineItem
+                {
+                    ItemDescription = ItemDescription,
+                    ItemPrice = itemPriceDecimal
+                };
+                LineItems.Add(updateLineItem);
+                int oldIndex = LineItems.IndexOf(updateLineItem);
+                LineItems.Move(oldIndex, newIndex);
+                InvoiceTotal = LineItems.Sum(x => x.ItemPrice);
+                ItemPrice = string.Empty;
+                ItemDescription = string.Empty;
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Failure", errorMessage, "Ok");
+            }
+        }
+
+        async Task DeleteLineItem(LineItem lineItem)
+        {
+            LineItems.Remove(lineItem);
+            UpdateButtonEnabled = false;
+            DeleteButtonEnabled = false;
+        }
+
+        bool CanSave() => !Helpers.Validators.CheckIfZeroOrNegative(InvoiceTotal) && !HasErrors;
     }
 }

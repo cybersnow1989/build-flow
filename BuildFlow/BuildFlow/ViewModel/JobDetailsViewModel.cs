@@ -18,6 +18,21 @@ namespace BuildFlow.ViewModel
         public Command DeleteCommand => _deleteCommand ?? (_deleteCommand = new Command(async () => await Delete()));
         public Command AddInvoiceCommand => new Command<Job>(async job => await NavService.NavigateTo<InvoiceNewViewModel, Job>(job));
         public Command ViewInvoiceCommand => new Command<Invoice>(async invoice => await NavService.NavigateTo<InvoiceDetailsViewModel, Invoice>(invoice));
+        public Command SearchCommand => new Command(async () => await Search());
+
+
+        #region Properties
+        private string _searchText;
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+            }
+        }
 
         private Job _selectedJob;
 
@@ -96,20 +111,66 @@ namespace BuildFlow.ViewModel
             }
         }
 
+        private bool _viewInvoiceButtonEnabled;
+
+        public bool ViewInvoiceButtonEnabled
+        {
+            get => _viewInvoiceButtonEnabled;
+            set
+            {
+                _viewInvoiceButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _addInvoiceButtonEnabled;
+
+        public bool AddInvoiceButtonEnabled
+        {
+            get => _addInvoiceButtonEnabled;
+            set
+            {
+                _addInvoiceButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
         public JobDetailsViewModel(INavService navService) : base(navService)
         {
             CustomerList = new ObservableCollection<Customer>();
             Customers = new List<Customer>();
         }
 
+        public override void Init()
+        {
+            throw new JobNotProvidedException();
+        }
+
         public override void Init(Job selectedJob)
         {
             LoadCustomers();
             SelectedJob = selectedJob;
-            JobName = selectedJob.JobName;
+            JobName = selectedJob.JobTitle;
             var jobCustomer = CustomerList.FirstOrDefault(x => x.ID == selectedJob.CustomerID);
-            JobCustomerName = $"{jobCustomer.LastName}, {jobCustomer.LastName} ({jobCustomer.ID})";
+
+            if (jobCustomer != null)
+            {
+                JobCustomerName = $"{jobCustomer.LastName}, {jobCustomer.FirstName} (ID: {jobCustomer.ID})";
+            }
+            
             JobInvoice = Invoice.GetInvoiceByJobID(SelectedJob.ID);
+
+            if (JobInvoice == null)
+            {
+                ViewInvoiceButtonEnabled = false;
+                AddInvoiceButtonEnabled = true;
+            }
+            else
+            {
+                ViewInvoiceButtonEnabled = true;
+                AddInvoiceButtonEnabled = false;
+            }
         }
 
         void LoadCustomers()
@@ -127,7 +188,7 @@ namespace BuildFlow.ViewModel
 
         async Task Save()
         {
-            SelectedJob.JobName = JobName;
+            SelectedJob.JobTitle = JobName;
 
             if (Job.Update(SelectedJob))
             {
@@ -153,6 +214,23 @@ namespace BuildFlow.ViewModel
             }
 
             await NavService.GoBack();
+        }
+
+        async Task Search()
+        {
+            var results = Customers.Where(x => x.FirstName.ToLower().Contains(SearchText.ToLower())
+                                               || x.LastName.ToLower().Contains(SearchText.ToLower())
+                                               || x.Address.ToLower().Contains(SearchText.ToLower())
+                                               || x.City.ToLower().Contains(SearchText.ToLower())
+                                               || x.State.ToLower().Contains(SearchText.ToLower())
+                                               || x.Email.ToLower().Contains(SearchText.ToLower())).ToList();
+
+            CustomerList.Clear();
+
+            foreach (var result in results)
+            {
+                CustomerList.Add(result);
+            }
         }
 
         bool CanSave() => !string.IsNullOrWhiteSpace(JobName) && !HasErrors;

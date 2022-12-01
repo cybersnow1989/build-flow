@@ -5,10 +5,14 @@
 
     <StackLayout Margin="15"
                  VerticalOptions="Center">
-        <Entry x:Name="emailEntry" Placeholder="Email"
-               Keyboard="Email"/>
-        <Entry x:Name="passwordEntry" Placeholder="Username"
-               IsPassword="True"/>
+        <Entry Placeholder="Email"
+               Keyboard="Email"
+               Text="{Binding Email}"
+               x:Name="emailEntry"/>
+        <Entry Placeholder="Password"
+               IsPassword="True"
+               Text="{Binding Password}"
+               x:Name="passwordEntry"/>
         <Button x:Name="loginButton"
                 Text="Login"
                 BackgroundColor="#3F84E5"

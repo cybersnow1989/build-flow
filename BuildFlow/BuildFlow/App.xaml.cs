@@ -1,4 +1,5 @@
 ﻿using System;
+using BuildFlow.Model;
 using BuildFlow.Services;
 using BuildFlow.View;
 using BuildFlow.ViewModel;
@@ -10,6 +11,7 @@ namespace BuildFlow
     public partial class App : Application
     {
         public static string DatabaseLocation = String.Empty;
+        public CurrentUser CurrentUser = new CurrentUser();
         public App(string databaseLocation)
         {
             InitializeComponent();
@@ -28,10 +30,12 @@ namespace BuildFlow
             navService.RegisterViewMapping(typeof(InvoiceViewModel), typeof(InvoicePage));
             navService.RegisterViewMapping(typeof(InvoiceNewViewModel), typeof(InvoiceNewPage));
             navService.RegisterViewMapping(typeof(InvoiceDetailsViewModel), typeof(InvoiceDetailsPage));
+            navService.RegisterViewMapping(typeof(ReportsViewModel), typeof(ReportsPage));
 
             MainPage = loginPage;
 
             DatabaseLocation = databaseLocation;
+            Helpers.TestData.AddTestData();
         }
 
         protected override void OnStart()

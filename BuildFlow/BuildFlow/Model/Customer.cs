@@ -11,6 +11,11 @@ namespace BuildFlow.Model
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
 
         public static List<Customer> GetCustomers()
         {
@@ -22,30 +27,13 @@ namespace BuildFlow.Model
             }
         }
 
-        public static Customer GetCustomerById(int customerId)
+        public static Customer InsertCustomer(Customer customer)
         {
             using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
             {
                 conn.CreateTable<Customer>();
-                Customer customer = conn.Table<Customer>().FirstOrDefault(x => x.ID == customerId);
+                conn.Insert(customer);
                 return customer;
-            }
-        }
-
-        public static bool InsertCustomer(Customer customer)
-        {
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                conn.CreateTable<Customer>();
-                int rows = conn.Insert(customer);
-                if (rows > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
             }
         }
 

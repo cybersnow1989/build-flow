@@ -14,27 +14,44 @@ namespace BuildFlow.Model
         public string ItemDescription { get; set; }
         public decimal ItemPrice { get; set; }
 
-        public static bool InsertLineItems(List<LineItem> lineItems)
+        public static List<LineItem> InsertLineItems(List<LineItem> lineItems)
         {
             using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
             {
-                bool success = false;
                 conn.CreateTable<LineItem>();
 
                 foreach (LineItem lineItem in lineItems)
                 {
-                    int rows = conn.Insert(lineItem);
-                    if (rows > 0)
-                    {
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                    }
+                    conn.Insert(lineItem);
                 }
 
-                return success;
+                return lineItems;
+            }
+        }
+
+        public static List<LineItem> GetLineItemsByInvoiceID(int invoiceID)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            {
+                conn.CreateTable<LineItem>();
+                var lineItems = conn.Table<LineItem>().Where(x => x.InvoiceID == invoiceID).ToList();
+                return lineItems;
+            }
+        }
+
+        public static bool DeleteLineItems(List<LineItem> lineItems)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            {
+                int deleteCount = 0;
+                conn.CreateTable<LineItem>();
+
+                foreach (LineItem lineItem in lineItems)
+                {
+                    deleteCount += conn.Delete(lineItem);
+                }
+
+                return (deleteCount == lineItems.Count);
             }
         }
     }
